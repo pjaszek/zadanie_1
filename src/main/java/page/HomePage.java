@@ -24,7 +24,7 @@ public class HomePage {
 
     @Step("Pobranie adresu URL")
     public String getUrl() {
-        return WebDriverRunner.getAndCheckWebDriver().getTitle();
+        return WebDriverRunner.url();
     }
 
     @Step("Weryfikacja czy logo na stronie głównej jest widoczne")

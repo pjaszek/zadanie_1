@@ -1,16 +1,16 @@
 package StepDefinition;
 
-import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.ElementsCollection;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
-import page.HomePage;
 import page.TMobileProcess;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static page.TMobileProcess.Tab.DEVICES;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static util.BrowserDriver.configureBrowser;
 import static util.Loader.waitForLoaderDisappear;
 
@@ -18,7 +18,6 @@ import static util.Loader.waitForLoaderDisappear;
 public class StepDefinitions {
 
     private final TMobileProcess tMobileProcess = new TMobileProcess();
-    private final HomePage homePage = tMobileProcess.getHomePage();
 
     @Given("Otwórz odpowiednią przeglądarkę")
     public void otwórz_odpowiednią_przeglądarkę() {
@@ -32,40 +31,38 @@ public class StepDefinitions {
 
     @Then("Strona główna jest wyświetlona")
     public void strona_główna_jest_wyświetlona() {
-        homePage.confirmCookies();
+        assertEquals("https://www.t-mobile.pl/", tMobileProcess.getHomePage().getUrl());
+        tMobileProcess.getHomePage().confirmCookies();
         waitForLoaderDisappear();
-        String webTitle = WebDriverRunner.getAndCheckWebDriver().getTitle();
-        assertNotNull(webTitle);
     }
 
     @Then("Klient wybiera {string} z górnego menu")
-    public void klient_wybiera_z_górnego_menu(String tabName) {
-        tMobileProcess.getNavigationBar().goToTab(DEVICES);
+    public void klient_wybiera_z_górnego_menu(String buttonName) {
+        tMobileProcess.getNavigationBar().goToTab("Urządzenia");
+        assertEquals("Urządzenia", buttonName);
 
     }
 
     @Then("Pojawia się rozwijana lista")
     public void pojawia_się_rozwijana_lista() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+        tMobileProcess.getNavigationBar().isDropdownListIsVisible();
     }
 
-    @Then("Klient wybiera „Bez abonamentu” z kolumny „Smartwatche i opaski”")
-    public void klient_wybiera_bez_abonamentu_z_kolumny_smartwatche_i_opaski() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+    @Then("Klient wybiera {string} z kolumny {string}")
+    public void klient_wybiera_bez_abonamentu_z_kolumny_smartwatche_i_opaski(String button, String column) {
+        assertEquals("Smartwatche i opaski", column);
+        assertEquals("Bez abonamentu", button);
+        tMobileProcess.getNavigationBar().clickDropdownButton(column, button).click();
     }
 
     @Then("Widoczna lista smartfonów")
     public void widoczna_lista_smartfonów() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("Klient klika w pierwszy element z listy")
     public void klient_klika_w_pierwszy_element_z_listy() {
-        // Write code here that turns the phrase above into concrete actions
-        throw new io.cucumber.java.PendingException();
+
     }
 
     @Then("Widoczna strona produktu")
